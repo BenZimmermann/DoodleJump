@@ -41,12 +41,17 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Wenn Boden berührt wird → springen
-        if (collision.gameObject.CompareTag("Ground"))
+        foreach (ContactPoint2D contact in collision.contacts)
         {
-            shouldJump = true;
+            if (contact.normal.y > 0.5f &&
+                (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("StartGround")))
+            {
+                shouldJump = true;
+                break;
+            }
         }
     }
+
 
     private void Jump()
     {
